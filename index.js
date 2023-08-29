@@ -48,6 +48,29 @@ class Vector2 {
  * - Child gives up its ID to the subscription
  * - Subscription will locate child using ID when needed/called
  */
+class Subscription {
+    constructor() {
+        this.Children = [];
+
+        return this;
+    }
+    RemoveChild(ID) {
+        this.Children.find((v, i) => {
+            if(v.ID == ID) {
+                this.Children.splice(i, 1);
+                return true;
+            }
+        })
+    }
+}
+
+class Subscriber {
+    constructor(ID) {
+        this.ID = ID;
+
+        return this;
+    }
+}
 
 /**
  * Base Geometric
@@ -55,7 +78,7 @@ class Vector2 {
  * Remember, for our purposes, we're working with cartesian coordinates. The Radium Engine Display/Render Services will handle transformations to make them displayable
  */
 class Rectangle {
-    constructor(Position, Length, Width) {
+    constructor(Position = new Position2(), Length = 0, Width = 0) {
         // Position is defined as the top-left corner of the rectangle.
         this.Position = Position;
         // Width : Y property
@@ -98,3 +121,63 @@ class Rectangle {
         return false;
     }
 }
+
+// GameObject class: used for literally everything
+class GameObject {
+    constructor() {
+        // Vital
+        this.RootPart = new Rectangle();
+
+        // Physics
+        this.Physics = {
+            RootPart: new Rectangle(),
+            Enabled: false
+        }
+
+        // Rendering
+        this.Render = {
+            RootPart: new Rectangle(),
+            Visible: false,
+            Texture: {
+                // TextureMode: None, FilePath (get img from resource), FillColor (fill with hex code color)
+                TextureMode: "None",
+                FilePath: "",
+                FillColor: ""
+            }
+
+        }
+
+        return this;
+    }
+}
+
+/**
+ * Services
+ */
+
+// ConfigService
+let Config = {
+    Reference: null,
+    ScreenConfig: {
+        fps: 0,
+        BaseProportions: {
+            X: 0,
+            Y: 0
+        }
+    }
+}
+
+// AssetService (one of the more harder ones)
+let Asset = {
+
+}
+
+// PhysicsService
+
+// RenderService
+
+// DisplayService
+
+// MusicService
+
+// ChunkService
